@@ -1,7 +1,7 @@
 {
-  "captured_at": "2026-09-06T04:29:06.021000+00:00",
+  "captured_at": "2026-09-06T05:22:40.328880+00:00",
   "source": "Actual running application; no route mocks, replay data, or screenshot alterations",
-  "url": "http://localhost:8080/?investigation=65cb7eb9bfb045ddba82435fa3731cc5",
+  "url": "http://127.0.0.1:18990/?investigation=65cb7eb9bfb045ddba82435fa3731cc5",
   "viewport": {
     "width": 1440,
     "height": 1080
@@ -135,8 +135,8 @@
   ],
   "dashboard": {
     "window": {
-      "start": "2026-09-06T04:28:33.021911+00:00",
-      "end": "2026-09-06T04:29:03.021911+00:00"
+      "start": "2026-09-06T05:22:07.329618+00:00",
+      "end": "2026-09-06T05:22:37.329618+00:00"
     },
     "services": [
       {
@@ -145,12 +145,12 @@
         "error_count": 0,
         "timeout_count": 0,
         "error_rate": 0.0,
-        "p50_ms": 19.056,
-        "p95_ms": 20.621,
+        "p50_ms": 19.092,
+        "p95_ms": 22.635,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_53cb85a9c3d114a880f191a5cff591913b6df5b08aeb0d55dc4adae438845b04",
+        "evidence_id": "ev_45ed0c62e2009f3c79fd4e7fdfd575368f89cd66d728506b0cf08738970e644d",
         "limitations": [],
         "status": "healthy"
       },
@@ -160,12 +160,12 @@
         "error_count": 0,
         "timeout_count": 0,
         "error_rate": 0.0,
-        "p50_ms": 15.83,
-        "p95_ms": 16.435,
+        "p50_ms": 15.815,
+        "p95_ms": 16.676,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_dc91e160b441fcc4ae0b44ef02fb0c5cce926e38dcf398a08afbe84ada2cb155",
+        "evidence_id": "ev_35644504ee1655e2a5f5593e281d8c3b99acc08a471b1b9b6b5c2befd9124b11",
         "limitations": [],
         "status": "healthy"
       }
@@ -177,12 +177,12 @@
         "error_count": 0,
         "timeout_count": 0,
         "error_rate": 0.0,
-        "p50_ms": 19.056,
-        "p95_ms": 20.621,
+        "p50_ms": 19.092,
+        "p95_ms": 22.635,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_53cb85a9c3d114a880f191a5cff591913b6df5b08aeb0d55dc4adae438845b04",
+        "evidence_id": "ev_45ed0c62e2009f3c79fd4e7fdfd575368f89cd66d728506b0cf08738970e644d",
         "limitations": []
       },
       "inventory-service": {
@@ -191,21 +191,21 @@
         "error_count": 0,
         "timeout_count": 0,
         "error_rate": 0.0,
-        "p50_ms": 15.83,
-        "p95_ms": 16.435,
+        "p50_ms": 15.815,
+        "p95_ms": 16.676,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_dc91e160b441fcc4ae0b44ef02fb0c5cce926e38dcf398a08afbe84ada2cb155",
+        "evidence_id": "ev_35644504ee1655e2a5f5593e281d8c3b99acc08a471b1b9b6b5c2befd9124b11",
         "limitations": []
       }
     },
     "traffic": {
       "running": true,
-      "requests_sent": 892,
-      "successes": 589,
-      "failures": 303,
-      "started_at": "2026-09-06T04:27:40.472010+00:00"
+      "requests_sent": 216,
+      "successes": 145,
+      "failures": 71,
+      "started_at": "2026-09-06T05:20:52.481800+00:00"
     },
     "controls": {
       "fault_enabled": false
@@ -214,77 +214,77 @@
     "mode": "live"
   },
   "recovery": {
-    "status": "insufficient",
+    "status": "complete",
     "window_seconds": 30,
     "before": {
-      "start": "2026-09-06T04:22:19.569595+00:00",
-      "end": "2026-09-06T04:22:49.569595+00:00",
+      "start": "2026-09-06T05:21:30.684579+00:00",
+      "end": "2026-09-06T05:22:00.684579+00:00",
       "metrics": {
         "orders-service": {
           "service": "orders-service",
-          "request_count": 16,
-          "error_count": 8,
-          "timeout_count": 8,
-          "error_rate": 0.5,
-          "p50_ms": 18.295,
-          "p95_ms": 604.638,
+          "request_count": 60,
+          "error_count": 60,
+          "timeout_count": 60,
+          "error_rate": 1.0,
+          "p50_ms": 601.635,
+          "p95_ms": 602.895,
           "window_seconds": 30.0,
-          "requests_per_second": 0.533333,
+          "requests_per_second": 2.0,
           "available": true,
-          "evidence_id": "ev_7a2e6622791678625ac855c14e0182842a4a86dace89b7193288ce6bc5da484c",
+          "evidence_id": "ev_319186df56f5acd08ce27bc2c79782f973ac0d4ab7093de600b019bf72a9888b",
           "limitations": []
         },
         "inventory-service": {
           "service": "inventory-service",
-          "request_count": 16,
+          "request_count": 60,
           "error_count": 0,
           "timeout_count": 0,
           "error_rate": 0.0,
-          "p50_ms": 15.698,
-          "p95_ms": 1806.491,
+          "p50_ms": 1804.584,
+          "p95_ms": 1805.978,
           "window_seconds": 30.0,
-          "requests_per_second": 0.533333,
+          "requests_per_second": 2.0,
           "available": true,
-          "evidence_id": "ev_9c1fa6e855d67c26bb4c466a42f1a56af7aba1fd08e9e3ce427ec42227a5e874",
+          "evidence_id": "ev_23d9a1ed1c1fdf790158396f1bf8b2b21059a4f926c5a64ec86cb504e044dcd8",
           "limitations": []
         }
       }
     },
     "after": {
-      "start": "2026-09-06T04:22:55.589228+00:00",
-      "end": "2026-09-06T04:23:25.589228+00:00",
+      "start": "2026-09-06T05:22:06.707190+00:00",
+      "end": "2026-09-06T05:22:36.707190+00:00",
       "metrics": {
         "orders-service": {
           "service": "orders-service",
-          "request_count": 8,
+          "request_count": 60,
           "error_count": 0,
           "timeout_count": 0,
           "error_rate": 0.0,
-          "p50_ms": 18.479,
-          "p95_ms": 19.842,
+          "p50_ms": 19.092,
+          "p95_ms": 22.635,
           "window_seconds": 30.0,
-          "requests_per_second": 0.266667,
+          "requests_per_second": 2.0,
           "available": true,
-          "evidence_id": "ev_e9a95507ab52d6e468763f9f97a35c99a87d6c5a3d2814f139ad189e2a7ddbc9",
+          "evidence_id": "ev_7889685414aa0e319ab75e113c52f950df9568eb0599596d12dd881277857f1b",
           "limitations": []
         },
         "inventory-service": {
           "service": "inventory-service",
-          "request_count": 8,
+          "request_count": 60,
           "error_count": 0,
           "timeout_count": 0,
           "error_rate": 0.0,
-          "p50_ms": 15.868,
-          "p95_ms": 16.333,
+          "p50_ms": 15.815,
+          "p95_ms": 16.676,
           "window_seconds": 30.0,
-          "requests_per_second": 0.266667,
+          "requests_per_second": 2.0,
           "available": true,
-          "evidence_id": "ev_8fb432920dd839c95b7bd49c5f00582da8625f16cad892996f8faee692950256",
+          "evidence_id": "ev_a286ec40c4fae7220f10e1ea3c16cb0fef0cfc3beddd9e8f3813e437ab98826b",
           "limitations": []
         }
       }
     },
-    "summary": "Comparison incomplete: use continuous traffic and at least 10 requests per service in equally long windows with comparable volume.",
+    "summary": "No service errors observed in the recovery window at comparable request volume. This verifies observed behavior in these windows only.",
     "remaining_seconds": 0
   },
   "model": {

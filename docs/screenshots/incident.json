@@ -1,7 +1,7 @@
 {
-  "captured_at": "2026-09-06T04:18:27.822296+00:00",
+  "captured_at": "2026-09-06T05:22:03.556563+00:00",
   "source": "Actual running application; no route mocks, replay data, or screenshot alterations",
-  "url": "http://localhost:8080/?investigation=65cb7eb9bfb045ddba82435fa3731cc5",
+  "url": "http://127.0.0.1:18990/?investigation=65cb7eb9bfb045ddba82435fa3731cc5",
   "viewport": {
     "width": 1440,
     "height": 1080
@@ -135,8 +135,8 @@
   ],
   "dashboard": {
     "window": {
-      "start": "2026-09-06T04:17:54.823198+00:00",
-      "end": "2026-09-06T04:18:24.823198+00:00"
+      "start": "2026-09-06T05:21:30.557324+00:00",
+      "end": "2026-09-06T05:22:00.557324+00:00"
     },
     "services": [
       {
@@ -145,12 +145,12 @@
         "error_count": 60,
         "timeout_count": 60,
         "error_rate": 1.0,
-        "p50_ms": 601.994,
-        "p95_ms": 603.319,
+        "p50_ms": 601.642,
+        "p95_ms": 602.895,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_c53cc2dfe73bb061648c8793c48cf736fca00658bbe60278b8384e373e9dd909",
+        "evidence_id": "ev_c588b71f525f8c43143c88faca8cd823025c05bd54bbf4c551514972a5684480",
         "limitations": [],
         "status": "degraded"
       },
@@ -160,12 +160,12 @@
         "error_count": 0,
         "timeout_count": 0,
         "error_rate": 0.0,
-        "p50_ms": 1805.04,
-        "p95_ms": 1806.736,
+        "p50_ms": 1804.584,
+        "p95_ms": 1805.978,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_82ab2d079a261fa56f2e224f513e3dd0c3bfa0d3eff99efa22d8802dba34c5b6",
+        "evidence_id": "ev_cde259ddd58a1df8eff99beb1e5d580bf5542b1865f975e1dafc33374ca43521",
         "limitations": [],
         "status": "healthy"
       }
@@ -177,12 +177,12 @@
         "error_count": 60,
         "timeout_count": 60,
         "error_rate": 1.0,
-        "p50_ms": 601.994,
-        "p95_ms": 603.319,
+        "p50_ms": 601.642,
+        "p95_ms": 602.895,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_c53cc2dfe73bb061648c8793c48cf736fca00658bbe60278b8384e373e9dd909",
+        "evidence_id": "ev_c588b71f525f8c43143c88faca8cd823025c05bd54bbf4c551514972a5684480",
         "limitations": []
       },
       "inventory-service": {
@@ -191,21 +191,21 @@
         "error_count": 0,
         "timeout_count": 0,
         "error_rate": 0.0,
-        "p50_ms": 1805.04,
-        "p95_ms": 1806.736,
+        "p50_ms": 1804.584,
+        "p95_ms": 1805.978,
         "window_seconds": 30.0,
         "requests_per_second": 2.0,
         "available": true,
-        "evidence_id": "ev_82ab2d079a261fa56f2e224f513e3dd0c3bfa0d3eff99efa22d8802dba34c5b6",
+        "evidence_id": "ev_cde259ddd58a1df8eff99beb1e5d580bf5542b1865f975e1dafc33374ca43521",
         "limitations": []
       }
     },
     "traffic": {
       "running": true,
-      "requests_sent": 545,
-      "successes": 250,
-      "failures": 294,
-      "started_at": "2026-09-06T04:13:55.555750+00:00"
+      "requests_sent": 143,
+      "successes": 72,
+      "failures": 69,
+      "started_at": "2026-09-06T05:20:52.481800+00:00"
     },
     "controls": {
       "fault_enabled": true

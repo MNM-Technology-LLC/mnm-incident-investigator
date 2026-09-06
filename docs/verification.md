@@ -55,6 +55,8 @@ These are individual real runs, not a reliability benchmark. Temperature zero do
 
 The [healthy](screenshots/healthy.png), [incident](screenshots/incident.png), and [recovery](screenshots/recovery.png) images were captured from the running Java/Python application with real Ollama jobs. Their adjacent JSON files record capture time, actual API responses, resolved evidence IDs, and zero browser errors. No response mocking, replayed results, or screenshot alterations were used. Separate checks of the actual completed incident and recovery view at 320, 390, 768, 1024, and 1440 px found no horizontal overflow or browser errors.
 
+The screenshots were refreshed on September 6, 2026 for **MNM Technology** branding. They show fresh measured traffic and recovery windows alongside completed live investigations retrieved from the running API. The evaluation reports above retain their original observation times and measurements.
+
 The actual browser's **Reset fault** button was clicked while traffic continued. Both services completed **60 requests in each 30-second window**. Orders errors and timeouts fell from **60 to 0**; orders p95 fell from **603.319 ms to 21.017 ms**, and inventory p95 from **1,806.673 ms to 16.575 ms**. The [recovery report](evaluations/recovery.json) includes all four resolving query snapshots and explicitly limits recovery to the observed windows. This comparison is deterministic measurement following an operator action; it is not a model-generated recovery claim.
 
 ## Reproduce
