@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#13252b">
+  <meta name="description" content="Follow an AI investigator from real application telemetry to an explanation you can verify.">
+  <title>MNM Incident Investigator</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2313252b'/%3E%3Cpath d='M6 22V10l5 7 5-7v12m3 0V10l7 12V10' fill='none' stroke='%2379dbb8' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to investigation</a>
+  <aside class="sidebar" aria-label="Project navigation">
+    <a class="brand" href="/" aria-label="MNM Incident Investigator home"><span class="brand-mark" aria-hidden="true">m<span>n</span>m</span><span class="brand-word">MNM ASSOCIATES<span>ENGINEERING LAB</span></span></a>
+    <div class="sidebar-project"><span class="eyebrow">OPEN SOURCE SHOWCASE</span><p>Incident<br>Investigator<span class="version">01</span></p></div>
+    <nav class="nav"><a class="nav-item active" href="#main"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>Investigation<span class="nav-dot"></span></a><a class="nav-item" href="#recovery"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11a8 8 0 1 1 2 7M4 5v6h6M12 8v5l3 2"/></svg>Recovery</a><button class="nav-item" id="all-evidence" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h5"/></svg>Evidence records<span id="evidence-count" class="nav-count">0</span></button></nav>
+    <div class="sidebar-note"><span class="shield-icon" aria-hidden="true">◇</span><strong>Evidence before answers.</strong><p>Local inference.<br>Read-only investigation.<br>Every citation inspectable.</p></div>
+    <div class="sidebar-bottom"><span class="small-dot"></span> LOCAL DEMO<span>APACHE 2.0</span></div>
+  </aside>
+
+  <main id="main" class="main">
+    <header class="topbar"><div class="breadcrumb">Engineering lab<span>/</span><strong>Incident Investigator</strong></div><div class="topbar-right"><span class="live-label"><span class="small-dot"></span>LIVE TELEMETRY</span><span class="local-label">LOCAL ENVIRONMENT</span></div></header>
+    <div class="page-content">
+      <section class="page-heading" aria-labelledby="page-title"><div><div class="eyebrow">FROM SYMPTOM TO SUPPORTING EVIDENCE</div><h1 id="page-title">Understand the incident.</h1><p>Break a small application. Follow the evidence. Verify the recovery.</p></div><div class="model-status" id="model-status"><span class="status-dot pending"></span><div><strong id="model-label">Checking local model</strong><span id="model-detail">Inference stays on your machine</span></div></div></section>
+      <div class="notice" id="notice" role="status" hidden></div>
+      <div class="notice notice-warning" id="model-notice" hidden><strong>Local model unavailable</strong><span id="model-notice-detail">Connect Ollama to run a live AI investigation. Application controls and telemetry remain available.</span></div>
+
+      <section class="overview-grid" aria-label="Current measured application activity">
+        <article class="metric-card"><div class="metric-label">Orders success <span class="metric-icon">↗</span></div><div class="metric-value" id="success-rate">—</div><div class="metric-description" id="success-description">Waiting for completed requests</div><div class="metric-rail"><span id="success-rail"></span></div></article>
+        <article class="metric-card"><div class="metric-label">Request activity <span class="metric-icon">⌁</span></div><div class="metric-value"><span id="request-rate">—</span><small>req/s</small></div><div class="metric-description" id="request-description">Measured at orders-service</div><svg class="sparkline" id="activity-chart" viewBox="0 0 240 26" preserveAspectRatio="none" role="img" aria-label="Measured request activity, waiting for samples"><path id="activity-path" d=""/></svg></article>
+        <article class="metric-card"><div class="metric-label">Orders p95 latency <span class="metric-icon">◷</span></div><div class="metric-value"><span id="latency">—</span><small>ms</small></div><div class="metric-description">95% of completed requests are faster</div><div class="metric-footnote" id="latency-note">No samples yet</div></article>
+        <article class="metric-card"><div class="metric-label">Downstream timeouts <span class="metric-icon">↯</span></div><div class="metric-value" id="timeout-count">—</div><div class="metric-description" id="timeout-description">Observed in orders-service</div><div class="metric-footnote"><span class="window-dot"></span><span id="observation-window">30-second observation window</span></div></article>
+      </section>
+
+      <section class="service-strip" aria-labelledby="service-heading"><div class="service-strip-label"><h2 id="service-heading">Application path</h2><span id="telemetry-status">Waiting for telemetry</span></div><div class="service-node"><span class="service-glyph" aria-hidden="true">□</span><div><strong>orders-service</strong><span>Accepts synthetic orders</span></div><span class="badge neutral" id="orders-health">No data</span></div><div class="service-connector" aria-hidden="true"><span></span><b>HTTP</b><span>→</span></div><div class="service-node"><span class="service-glyph" aria-hidden="true">▤</span><div><strong>inventory-service</strong><span>Checks item availability</span></div><span class="badge neutral" id="inventory-health">No data</span></div></section>
+
+      <section class="demo-controls" aria-labelledby="demo-heading"><div class="section-heading"><div><span class="eyebrow">THE SCENARIO</span><h2 id="demo-heading">One incident. The full investigation.</h2></div><span class="scenario-state" id="scenario-state"><span class="small-dot"></span>Ready to begin</span></div><div class="control-steps">
+        <div class="control-step"><span class="step-number">01</span><div><h3>Establish a baseline</h3><p id="traffic-detail">Send repeatable synthetic requests.</p></div><button class="button button-secondary" id="traffic-button" type="button"><span aria-hidden="true">▷</span>Start traffic</button></div>
+        <div class="control-step"><span class="step-number">02</span><div><h3>Introduce a failure</h3><p>A controlled delay in inventory.</p></div><button class="button button-fault" id="fault-button" type="button"><span aria-hidden="true">ϟ</span>Trigger fault</button></div>
+        <div class="control-step"><span class="step-number">03</span><div><h3>Restore &amp; verify</h3><p>Compare equal observation windows.</p></div><button class="button button-secondary" id="reset-button" type="button"><span aria-hidden="true">↻</span>Reset fault</button></div>
+      </div><div class="controls-footnote"><span class="small-dot"></span>Demo controls are separate from the investigator. The agent can only read telemetry.</div></section>
+
+      <form class="question-bar" id="investigation-form"><div class="question-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M8 10.5h5M10.5 8v5"/></svg></div><label for="question" class="sr-only">Ask the investigator</label><input id="question" name="question" value="Why are orders failing?" maxlength="400" autocomplete="off" required><span class="question-scope">Last 30 seconds</span><button class="button button-primary" id="investigate-button" type="submit">Investigate<span aria-hidden="true">↗</span></button></form>
+
+      <section class="investigation-grid" aria-label="Investigation results">
+        <article class="panel timeline-panel"><div class="panel-heading"><div><span class="eyebrow">THE EVIDENCE TRAIL</span><h2>Investigation timeline</h2></div><span class="badge neutral" id="investigation-state">Ready</span></div><div class="timeline-meta" id="timeline-meta">Tool calls and findings appear here as the agent investigates.</div><div class="timeline" id="timeline" aria-live="polite" aria-relevant="additions"><div class="empty-state" id="timeline-empty"><div class="empty-illustration" aria-hidden="true"><span class="empty-node">⌕</span><span class="empty-line"></span><span class="empty-node small">≋</span><span class="empty-line"></span><span class="empty-node">✓</span></div><h3>A question. An evidence trail.</h3><p>The investigator reads metrics, searches logs, and follows traces. Watch it build an explanation you can check.</p><span class="empty-caption">READ-ONLY TOOLS · LOCAL MODEL · REAL RECORDS</span></div></div></article>
+        <article class="panel diagnosis-panel"><div class="panel-heading"><div><span class="eyebrow">THE EXPLANATION</span><h2>Diagnosis</h2></div><span class="diagnosis-icon" aria-hidden="true">↗</span></div><div id="diagnosis-content"><div class="diagnosis-empty"><span class="thin-cross" aria-hidden="true">✧</span><h3>Let the evidence speak.</h3><p>The assessment will separate what was observed from what remains unknown, with links to every supporting record.</p><div class="diagnosis-placeholder"><span>Impact</span><span>Likely cause</span><span>Evidence</span><span>Uncertainty</span></div></div></div></article>
+      </section>
+
+      <section class="panel recovery-panel" id="recovery" aria-labelledby="recovery-heading"><div class="panel-heading"><div><span class="eyebrow">CLOSE THE LOOP</span><h2 id="recovery-heading">Verify recovery</h2></div><span class="badge neutral" id="recovery-state">Awaiting reset</span></div><div class="recovery-body" id="recovery-content"><div class="recovery-intro"><span class="recovery-icon" aria-hidden="true">↻</span><div><strong>A fix is only a fix when the measurements agree.</strong><p>Reset the fault to compare the 30 seconds before reset with a fresh 30-second window after requests have settled.</p></div></div></div></section>
+      <footer class="page-footer"><span>MNM Incident Investigator<span class="footer-divider">/</span>Open source, inspectable by design.</span><span id="last-updated">Waiting for first observation</span></footer>
+    </div>
+  </main>
+  <dialog id="evidence-dialog" class="evidence-dialog" aria-labelledby="evidence-title"><div class="dialog-heading"><div><span class="eyebrow">RETRIEVED TELEMETRY</span><h2 id="evidence-title">Evidence record</h2></div><button class="icon-button" id="close-evidence" aria-label="Close evidence" type="button">×</button></div><div id="evidence-content" class="evidence-content"></div></dialog>
+</body>
+</html>

@@ -1,0 +1,157 @@
+{
+  "mode": "live",
+  "expected_assessment": "incident",
+  "passed": false,
+  "note": "One real local-model run; this is not a statistical reliability estimate.",
+  "evidence": [
+    {
+      "available": true,
+      "data": {
+        "services": [
+          {
+            "error_count": 60,
+            "error_rate": 1.0,
+            "last_seen": "2026-09-06T04:00:52.773585Z",
+            "p95_ms": 603.956,
+            "request_count": 60,
+            "service": "orders-service",
+            "status": "degraded"
+          },
+          {
+            "error_count": 0,
+            "error_rate": 0.0,
+            "last_seen": "2026-09-06T04:00:52.978754Z",
+            "p95_ms": 1806.9,
+            "request_count": 60,
+            "service": "inventory-service",
+            "status": "healthy"
+          }
+        ],
+        "window_seconds": 30.0
+      },
+      "evidence_id": "ev_81ee3abab5e355a1d3a86019208e443d4805b3d3fcd9e5eafaa26e216b13134a",
+      "limitations": [
+        "Health summarizes observed completed requests in this window; it does not establish process liveness"
+      ],
+      "query": {
+        "end": "2026-09-06T04:00:53.226864Z",
+        "start": "2026-09-06T04:00:23.226864Z"
+      },
+      "tool": "get_service_health"
+    }
+  ],
+  "model_status": {
+    "available": true,
+    "model": "qwen3:4b",
+    "mode": "live",
+    "detail": "Local Ollama model is downloaded and advertises tool calling; first inference may load weights"
+  },
+  "investigation": {
+    "id": "fe98cb25d31e4f51949c38286dc6d7ad",
+    "status": "complete",
+    "mode": "live",
+    "model": "qwen3:4b",
+    "started_at": "2026-09-06T04:00:56.226881+00:00",
+    "window": {
+      "start": "2026-09-06T04:00:23.226864+00:00",
+      "end": "2026-09-06T04:00:53.226864+00:00"
+    },
+    "timeline": [
+      {
+        "sequence": 1,
+        "timestamp": "2026-09-06T04:00:56.231707+00:00",
+        "type": "status",
+        "summary": "Local model is investigating a fixed telemetry window with read-only tools."
+      },
+      {
+        "sequence": 2,
+        "timestamp": "2026-09-06T04:01:17.232820+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 3,
+        "timestamp": "2026-09-06T04:01:38.237325+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 4,
+        "timestamp": "2026-09-06T04:01:59.844702+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 5,
+        "timestamp": "2026-09-06T04:02:21.406268+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 6,
+        "timestamp": "2026-09-06T04:02:42.873012+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 7,
+        "timestamp": "2026-09-06T04:03:06.266341+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 8,
+        "timestamp": "2026-09-06T04:03:34.732664+00:00",
+        "type": "tool_call",
+        "tool": "get_service_health",
+        "arguments": {
+          "start": "2026-09-06T04:00:23.226864+00:00",
+          "end": "2026-09-06T04:00:53.226864+00:00"
+        },
+        "summary": "Reading get_service_health within the fixed observation window."
+      },
+      {
+        "sequence": 9,
+        "timestamp": "2026-09-06T04:03:34.744890+00:00",
+        "type": "tool_result",
+        "tool": "get_service_health",
+        "evidence_id": "ev_81ee3abab5e355a1d3a86019208e443d4805b3d3fcd9e5eafaa26e216b13134a",
+        "summary": "orders-service: degraded (60 samples); inventory-service: healthy (60 samples)"
+      },
+      {
+        "sequence": 10,
+        "timestamp": "2026-09-06T04:04:06.713552+00:00",
+        "type": "status",
+        "summary": "Assessment needs correction: Call submit_assessment with arguments matching its schema, including all required fields and retrieved evidence IDs"
+      },
+      {
+        "sequence": 11,
+        "timestamp": "2026-09-06T04:04:06.715112+00:00",
+        "type": "status",
+        "summary": "Investigation complete"
+      }
+    ],
+    "diagnosis": {
+      "assessment": "incomplete",
+      "impact": "A complete assessment of the observation window could not be established.",
+      "likely_cause": "Unknown: no validated model conclusion is available.",
+      "confidence": "low",
+      "confidence_basis": "The bounded model run ended without a sufficiently supported, valid diagnosis.",
+      "evidence": [
+        {
+          "id": "ev_81ee3abab5e355a1d3a86019208e443d4805b3d3fcd9e5eafaa26e216b13134a",
+          "reason": "Retrieved query result; inspect its records and limitations."
+        }
+      ],
+      "uncertainty": [
+        "Available evidence has not supported a validated explanation; missing data must not be treated as zero failures."
+      ],
+      "next_steps": [
+        "Inspect the retrieved evidence, confirm telemetry and local model availability, then investigate a window with completed traffic."
+      ]
+    },
+    "error": null
+  },
+  "error": "Expected incident, received incomplete; inspect the actual model output",
+  "elapsed_seconds": 191.373
+}

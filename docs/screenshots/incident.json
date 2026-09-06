@@ -1,0 +1,231 @@
+{
+  "captured_at": "2026-09-06T04:18:27.822296+00:00",
+  "source": "Actual running application; no route mocks, replay data, or screenshot alterations",
+  "url": "http://localhost:8080/?investigation=65cb7eb9bfb045ddba82435fa3731cc5",
+  "viewport": {
+    "width": 1440,
+    "height": 1080
+  },
+  "investigation": {
+    "id": "65cb7eb9bfb045ddba82435fa3731cc5",
+    "status": "complete",
+    "mode": "live",
+    "model": "qwen3:8b",
+    "started_at": "2026-09-06T04:17:01.365350+00:00",
+    "window": {
+      "start": "2026-09-06T04:16:28.365333+00:00",
+      "end": "2026-09-06T04:16:58.365333+00:00"
+    },
+    "timeline": [
+      {
+        "sequence": 1,
+        "timestamp": "2026-09-06T04:17:01.369660+00:00",
+        "type": "status",
+        "summary": "Local model is investigating a fixed telemetry window with read-only tools."
+      },
+      {
+        "sequence": 2,
+        "timestamp": "2026-09-06T04:17:03.109693+00:00",
+        "type": "tool_call",
+        "tool": "get_service_health",
+        "arguments": {
+          "start": "2026-09-06T04:16:28.365333+00:00",
+          "end": "2026-09-06T04:16:58.365333+00:00"
+        },
+        "summary": "Reading get_service_health within the fixed observation window."
+      },
+      {
+        "sequence": 3,
+        "timestamp": "2026-09-06T04:17:03.115903+00:00",
+        "type": "tool_result",
+        "tool": "get_service_health",
+        "evidence_id": "ev_5127d39be8080bb7ac7b992e13dd0aa70aadbcb98949a5d5f7f7ad1ee346a366",
+        "summary": "orders-service: degraded (60 samples); inventory-service: healthy (60 samples)"
+      },
+      {
+        "sequence": 4,
+        "timestamp": "2026-09-06T04:17:06.297616+00:00",
+        "type": "tool_call",
+        "tool": "search_logs",
+        "arguments": {
+          "start": "2026-09-06T04:16:28.365333+00:00",
+          "end": "2026-09-06T04:16:58.365333+00:00",
+          "service": "orders-service",
+          "level": "ERROR",
+          "limit": 5
+        },
+        "summary": "Reading search_logs within the fixed observation window."
+      },
+      {
+        "sequence": 5,
+        "timestamp": "2026-09-06T04:17:06.302105+00:00",
+        "type": "tool_result",
+        "tool": "search_logs",
+        "evidence_id": "ev_8fc7405a7d729d56ce415f718a95ec42336d08cea206deea570455d15a989503",
+        "summary": "Retrieved 5 matching log records."
+      },
+      {
+        "sequence": 6,
+        "timestamp": "2026-09-06T04:17:10.975313+00:00",
+        "type": "tool_call",
+        "tool": "get_trace",
+        "arguments": {
+          "start": "2026-09-06T04:16:28.365333+00:00",
+          "end": "2026-09-06T04:16:58.365333+00:00",
+          "trace_id": "7eddfdb859486d7939c910096eaed757"
+        },
+        "summary": "Reading get_trace within the fixed observation window."
+      },
+      {
+        "sequence": 7,
+        "timestamp": "2026-09-06T04:17:10.980416+00:00",
+        "type": "tool_result",
+        "tool": "get_trace",
+        "evidence_id": "ev_e2374b480ab96665997f244d496476f54b8ac0eaa4ebdd91f7c6ddf6c9e356e3",
+        "summary": "Retrieved 3 correlated spans; trace complete: True."
+      },
+      {
+        "sequence": 8,
+        "timestamp": "2026-09-06T04:17:21.294798+00:00",
+        "type": "finding",
+        "summary": "Validated assessment: incident; confidence high."
+      },
+      {
+        "sequence": 9,
+        "timestamp": "2026-09-06T04:17:21.295131+00:00",
+        "type": "status",
+        "summary": "Investigation complete"
+      }
+    ],
+    "diagnosis": {
+      "assessment": "incident",
+      "impact": "Orders are failing with 100% error rate during the fixed window.",
+      "likely_cause": "Inventory service is causing timeouts in orders-service.",
+      "confidence": "high",
+      "confidence_basis": "Orders-service has 100% error rate with timeout errors, and the trace shows inventory request timeouts.",
+      "evidence": [
+        {
+          "id": "ev_5127d39be8080bb7ac7b992e13dd0aa70aadbcb98949a5d5f7f7ad1ee346a366",
+          "reason": "Orders-service is degraded with 100% error rate during the fixed window."
+        },
+        {
+          "id": "ev_8fc7405a7d729d56ce415f718a95ec42336d08cea206deea570455d15a989503",
+          "reason": "Orders-service has multiple timeout errors, indicating dependency issues with inventory-service."
+        },
+        {
+          "id": "ev_e2374b480ab96665997f244d496476f54b8ac0eaa4ebdd91f7c6ddf6c9e356e3",
+          "reason": "Trace shows inventory request timeouts in orders-service, confirming dependency issues."
+        }
+      ],
+      "uncertainty": [
+        "No telemetry confirms the exact cause of inventory-service delay, but it is likely a dependency issue."
+      ],
+      "next_steps": [
+        "Investigate inventory-service for potential delays or outages.",
+        "Check network latency between orders-service and inventory-service.",
+        "Review inventory-service logs for any errors or performance issues."
+      ]
+    },
+    "error": null
+  },
+  "resolved_evidence_ids": [
+    "ev_5127d39be8080bb7ac7b992e13dd0aa70aadbcb98949a5d5f7f7ad1ee346a366",
+    "ev_8fc7405a7d729d56ce415f718a95ec42336d08cea206deea570455d15a989503",
+    "ev_e2374b480ab96665997f244d496476f54b8ac0eaa4ebdd91f7c6ddf6c9e356e3"
+  ],
+  "dashboard": {
+    "window": {
+      "start": "2026-09-06T04:17:54.823198+00:00",
+      "end": "2026-09-06T04:18:24.823198+00:00"
+    },
+    "services": [
+      {
+        "service": "orders-service",
+        "request_count": 60,
+        "error_count": 60,
+        "timeout_count": 60,
+        "error_rate": 1.0,
+        "p50_ms": 601.994,
+        "p95_ms": 603.319,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_c53cc2dfe73bb061648c8793c48cf736fca00658bbe60278b8384e373e9dd909",
+        "limitations": [],
+        "status": "degraded"
+      },
+      {
+        "service": "inventory-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 1805.04,
+        "p95_ms": 1806.736,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_82ab2d079a261fa56f2e224f513e3dd0c3bfa0d3eff99efa22d8802dba34c5b6",
+        "limitations": [],
+        "status": "healthy"
+      }
+    ],
+    "metrics": {
+      "orders-service": {
+        "service": "orders-service",
+        "request_count": 60,
+        "error_count": 60,
+        "timeout_count": 60,
+        "error_rate": 1.0,
+        "p50_ms": 601.994,
+        "p95_ms": 603.319,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_c53cc2dfe73bb061648c8793c48cf736fca00658bbe60278b8384e373e9dd909",
+        "limitations": []
+      },
+      "inventory-service": {
+        "service": "inventory-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 1805.04,
+        "p95_ms": 1806.736,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_82ab2d079a261fa56f2e224f513e3dd0c3bfa0d3eff99efa22d8802dba34c5b6",
+        "limitations": []
+      }
+    },
+    "traffic": {
+      "running": true,
+      "requests_sent": 545,
+      "successes": 250,
+      "failures": 294,
+      "started_at": "2026-09-06T04:13:55.555750+00:00"
+    },
+    "controls": {
+      "fault_enabled": true
+    },
+    "telemetry_available": true,
+    "mode": "live"
+  },
+  "recovery": {
+    "status": "idle",
+    "window_seconds": 30,
+    "before": null,
+    "after": null,
+    "remaining_seconds": 0,
+    "summary": "Reset the fault to compare recovery."
+  },
+  "model": {
+    "available": true,
+    "model": "qwen3:8b",
+    "mode": "live",
+    "detail": "Local Ollama model is downloaded and advertises tool calling; first inference may load weights"
+  },
+  "browser_errors": []
+}

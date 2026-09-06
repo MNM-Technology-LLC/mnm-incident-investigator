@@ -1,0 +1,166 @@
+{
+  "status": "complete",
+  "window_seconds": 30,
+  "before": {
+    "start": "2026-09-06T04:17:58.961176+00:00",
+    "end": "2026-09-06T04:18:28.961176+00:00",
+    "metrics": {
+      "orders-service": {
+        "service": "orders-service",
+        "request_count": 60,
+        "error_count": 60,
+        "timeout_count": 60,
+        "error_rate": 1.0,
+        "p50_ms": 601.917,
+        "p95_ms": 603.319,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_c69005d4a29faca52159bc2113fd61caa422559b8212be900006ce07018b25dd",
+        "limitations": []
+      },
+      "inventory-service": {
+        "service": "inventory-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 1805.131,
+        "p95_ms": 1806.673,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_977f022c418f7e05fa996273edb2a39d3795b010c90b899c6ad9c2aa79bd12cd",
+        "limitations": []
+      }
+    }
+  },
+  "after": {
+    "start": "2026-09-06T04:18:34.983959+00:00",
+    "end": "2026-09-06T04:19:04.983959+00:00",
+    "metrics": {
+      "orders-service": {
+        "service": "orders-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 18.619,
+        "p95_ms": 21.017,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_03d86ee8e4c2636aa2990eb0e52e58d86c9570539fbce6b0191b78afedc74117",
+        "limitations": []
+      },
+      "inventory-service": {
+        "service": "inventory-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 15.564,
+        "p95_ms": 16.575,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_81c89f52e076b9a7544095ca85698725e054e2f68f570b10fbe9eab26275dd18",
+        "limitations": []
+      }
+    }
+  },
+  "summary": "No service errors observed in the recovery window at comparable request volume. This verifies observed behavior in these windows only.",
+  "remaining_seconds": 0,
+  "capture_mode": "actual_browser_control_and_live_telemetry",
+  "browser_errors": [],
+  "evidence": [
+    {
+      "available": true,
+      "data": {
+        "error_count": 60,
+        "error_rate": 1.0,
+        "p50_ms": 601.917,
+        "p95_ms": 603.319,
+        "request_count": 60,
+        "requests_per_second": 2.0,
+        "service": "orders-service",
+        "timeout_count": 60,
+        "window_seconds": 30.0
+      },
+      "evidence_id": "ev_c69005d4a29faca52159bc2113fd61caa422559b8212be900006ce07018b25dd",
+      "limitations": [],
+      "query": {
+        "end": "2026-09-06T04:18:28.961176Z",
+        "service": "orders-service",
+        "start": "2026-09-06T04:17:58.961176Z"
+      },
+      "tool": "query_metrics"
+    },
+    {
+      "available": true,
+      "data": {
+        "error_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 1805.131,
+        "p95_ms": 1806.673,
+        "request_count": 60,
+        "requests_per_second": 2.0,
+        "service": "inventory-service",
+        "timeout_count": 0,
+        "window_seconds": 30.0
+      },
+      "evidence_id": "ev_977f022c418f7e05fa996273edb2a39d3795b010c90b899c6ad9c2aa79bd12cd",
+      "limitations": [],
+      "query": {
+        "end": "2026-09-06T04:18:28.961176Z",
+        "service": "inventory-service",
+        "start": "2026-09-06T04:17:58.961176Z"
+      },
+      "tool": "query_metrics"
+    },
+    {
+      "available": true,
+      "data": {
+        "error_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 18.619,
+        "p95_ms": 21.017,
+        "request_count": 60,
+        "requests_per_second": 2.0,
+        "service": "orders-service",
+        "timeout_count": 0,
+        "window_seconds": 30.0
+      },
+      "evidence_id": "ev_03d86ee8e4c2636aa2990eb0e52e58d86c9570539fbce6b0191b78afedc74117",
+      "limitations": [],
+      "query": {
+        "end": "2026-09-06T04:19:04.983959Z",
+        "service": "orders-service",
+        "start": "2026-09-06T04:18:34.983959Z"
+      },
+      "tool": "query_metrics"
+    },
+    {
+      "available": true,
+      "data": {
+        "error_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 15.564,
+        "p95_ms": 16.575,
+        "request_count": 60,
+        "requests_per_second": 2.0,
+        "service": "inventory-service",
+        "timeout_count": 0,
+        "window_seconds": 30.0
+      },
+      "evidence_id": "ev_81c89f52e076b9a7544095ca85698725e054e2f68f570b10fbe9eab26275dd18",
+      "limitations": [],
+      "query": {
+        "end": "2026-09-06T04:19:04.983959Z",
+        "service": "inventory-service",
+        "start": "2026-09-06T04:18:34.983959Z"
+      },
+      "tool": "query_metrics"
+    }
+  ]
+}

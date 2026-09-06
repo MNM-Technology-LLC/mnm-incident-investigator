@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Verify MNM Incident Investigator
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.11.23"
+          python-version: "3.12"
+          enable-cache: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Install Chromium for browser regressions
+        run: uv run --frozen playwright install --with-deps chromium
+      - name: Python permissions, evidence, policy, API, and browser tests
+        env:
+          MNM_BROWSER: "1"
+        run: make check
+      - name: Java service and tracing tests
+        run: mvn -B -ntp -f services/pom.xml verify
+      - name: Validate Compose and its credentials
+        run: |
+          make setup
+          docker compose config --quiet
+      - name: Build and start real application stack
+        run: make up
+      - name: Real Java fault, correlated telemetry, and recovery (no model)
+        run: make smoke
+      - name: Preserve deterministic smoke measurements
+        if: always()
+        run: docker compose cp console:/tmp/mnm-smoke-report.json /tmp/mnm-smoke-report.json || true
+      - name: Collect runtime logs
+        if: always()
+        run: docker compose logs --no-color > /tmp/mnm-stack.log 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deterministic-verification
+          path: |
+            /tmp/mnm-stack.log
+            /tmp/mnm-smoke-report.json
+            services/**/target/surefire-reports/
+          retention-days: 7
+      - name: Stop and remove only project resources
+        if: always()
+        run: docker compose down --volumes --remove-orphans
+
+  # Live model evaluation is deliberately separate. Run scripts/evaluate.py locally
+  # using your actual Ollama model and retain its measured JSON report.

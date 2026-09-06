@@ -1,0 +1,297 @@
+{
+  "captured_at": "2026-09-06T04:29:06.021000+00:00",
+  "source": "Actual running application; no route mocks, replay data, or screenshot alterations",
+  "url": "http://localhost:8080/?investigation=65cb7eb9bfb045ddba82435fa3731cc5",
+  "viewport": {
+    "width": 1440,
+    "height": 1080
+  },
+  "investigation": {
+    "id": "65cb7eb9bfb045ddba82435fa3731cc5",
+    "status": "complete",
+    "mode": "live",
+    "model": "qwen3:8b",
+    "started_at": "2026-09-06T04:17:01.365350+00:00",
+    "window": {
+      "start": "2026-09-06T04:16:28.365333+00:00",
+      "end": "2026-09-06T04:16:58.365333+00:00"
+    },
+    "timeline": [
+      {
+        "sequence": 1,
+        "timestamp": "2026-09-06T04:17:01.369660+00:00",
+        "type": "status",
+        "summary": "Local model is investigating a fixed telemetry window with read-only tools."
+      },
+      {
+        "sequence": 2,
+        "timestamp": "2026-09-06T04:17:03.109693+00:00",
+        "type": "tool_call",
+        "tool": "get_service_health",
+        "arguments": {
+          "start": "2026-09-06T04:16:28.365333+00:00",
+          "end": "2026-09-06T04:16:58.365333+00:00"
+        },
+        "summary": "Reading get_service_health within the fixed observation window."
+      },
+      {
+        "sequence": 3,
+        "timestamp": "2026-09-06T04:17:03.115903+00:00",
+        "type": "tool_result",
+        "tool": "get_service_health",
+        "evidence_id": "ev_5127d39be8080bb7ac7b992e13dd0aa70aadbcb98949a5d5f7f7ad1ee346a366",
+        "summary": "orders-service: degraded (60 samples); inventory-service: healthy (60 samples)"
+      },
+      {
+        "sequence": 4,
+        "timestamp": "2026-09-06T04:17:06.297616+00:00",
+        "type": "tool_call",
+        "tool": "search_logs",
+        "arguments": {
+          "start": "2026-09-06T04:16:28.365333+00:00",
+          "end": "2026-09-06T04:16:58.365333+00:00",
+          "service": "orders-service",
+          "level": "ERROR",
+          "limit": 5
+        },
+        "summary": "Reading search_logs within the fixed observation window."
+      },
+      {
+        "sequence": 5,
+        "timestamp": "2026-09-06T04:17:06.302105+00:00",
+        "type": "tool_result",
+        "tool": "search_logs",
+        "evidence_id": "ev_8fc7405a7d729d56ce415f718a95ec42336d08cea206deea570455d15a989503",
+        "summary": "Retrieved 5 matching log records."
+      },
+      {
+        "sequence": 6,
+        "timestamp": "2026-09-06T04:17:10.975313+00:00",
+        "type": "tool_call",
+        "tool": "get_trace",
+        "arguments": {
+          "start": "2026-09-06T04:16:28.365333+00:00",
+          "end": "2026-09-06T04:16:58.365333+00:00",
+          "trace_id": "7eddfdb859486d7939c910096eaed757"
+        },
+        "summary": "Reading get_trace within the fixed observation window."
+      },
+      {
+        "sequence": 7,
+        "timestamp": "2026-09-06T04:17:10.980416+00:00",
+        "type": "tool_result",
+        "tool": "get_trace",
+        "evidence_id": "ev_e2374b480ab96665997f244d496476f54b8ac0eaa4ebdd91f7c6ddf6c9e356e3",
+        "summary": "Retrieved 3 correlated spans; trace complete: True."
+      },
+      {
+        "sequence": 8,
+        "timestamp": "2026-09-06T04:17:21.294798+00:00",
+        "type": "finding",
+        "summary": "Validated assessment: incident; confidence high."
+      },
+      {
+        "sequence": 9,
+        "timestamp": "2026-09-06T04:17:21.295131+00:00",
+        "type": "status",
+        "summary": "Investigation complete"
+      }
+    ],
+    "diagnosis": {
+      "assessment": "incident",
+      "impact": "Orders are failing with 100% error rate during the fixed window.",
+      "likely_cause": "Inventory service is causing timeouts in orders-service.",
+      "confidence": "high",
+      "confidence_basis": "Orders-service has 100% error rate with timeout errors, and the trace shows inventory request timeouts.",
+      "evidence": [
+        {
+          "id": "ev_5127d39be8080bb7ac7b992e13dd0aa70aadbcb98949a5d5f7f7ad1ee346a366",
+          "reason": "Orders-service is degraded with 100% error rate during the fixed window."
+        },
+        {
+          "id": "ev_8fc7405a7d729d56ce415f718a95ec42336d08cea206deea570455d15a989503",
+          "reason": "Orders-service has multiple timeout errors, indicating dependency issues with inventory-service."
+        },
+        {
+          "id": "ev_e2374b480ab96665997f244d496476f54b8ac0eaa4ebdd91f7c6ddf6c9e356e3",
+          "reason": "Trace shows inventory request timeouts in orders-service, confirming dependency issues."
+        }
+      ],
+      "uncertainty": [
+        "No telemetry confirms the exact cause of inventory-service delay, but it is likely a dependency issue."
+      ],
+      "next_steps": [
+        "Investigate inventory-service for potential delays or outages.",
+        "Check network latency between orders-service and inventory-service.",
+        "Review inventory-service logs for any errors or performance issues."
+      ]
+    },
+    "error": null
+  },
+  "resolved_evidence_ids": [
+    "ev_5127d39be8080bb7ac7b992e13dd0aa70aadbcb98949a5d5f7f7ad1ee346a366",
+    "ev_8fc7405a7d729d56ce415f718a95ec42336d08cea206deea570455d15a989503",
+    "ev_e2374b480ab96665997f244d496476f54b8ac0eaa4ebdd91f7c6ddf6c9e356e3"
+  ],
+  "dashboard": {
+    "window": {
+      "start": "2026-09-06T04:28:33.021911+00:00",
+      "end": "2026-09-06T04:29:03.021911+00:00"
+    },
+    "services": [
+      {
+        "service": "orders-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 19.056,
+        "p95_ms": 20.621,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_53cb85a9c3d114a880f191a5cff591913b6df5b08aeb0d55dc4adae438845b04",
+        "limitations": [],
+        "status": "healthy"
+      },
+      {
+        "service": "inventory-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 15.83,
+        "p95_ms": 16.435,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_dc91e160b441fcc4ae0b44ef02fb0c5cce926e38dcf398a08afbe84ada2cb155",
+        "limitations": [],
+        "status": "healthy"
+      }
+    ],
+    "metrics": {
+      "orders-service": {
+        "service": "orders-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 19.056,
+        "p95_ms": 20.621,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_53cb85a9c3d114a880f191a5cff591913b6df5b08aeb0d55dc4adae438845b04",
+        "limitations": []
+      },
+      "inventory-service": {
+        "service": "inventory-service",
+        "request_count": 60,
+        "error_count": 0,
+        "timeout_count": 0,
+        "error_rate": 0.0,
+        "p50_ms": 15.83,
+        "p95_ms": 16.435,
+        "window_seconds": 30.0,
+        "requests_per_second": 2.0,
+        "available": true,
+        "evidence_id": "ev_dc91e160b441fcc4ae0b44ef02fb0c5cce926e38dcf398a08afbe84ada2cb155",
+        "limitations": []
+      }
+    },
+    "traffic": {
+      "running": true,
+      "requests_sent": 892,
+      "successes": 589,
+      "failures": 303,
+      "started_at": "2026-09-06T04:27:40.472010+00:00"
+    },
+    "controls": {
+      "fault_enabled": false
+    },
+    "telemetry_available": true,
+    "mode": "live"
+  },
+  "recovery": {
+    "status": "insufficient",
+    "window_seconds": 30,
+    "before": {
+      "start": "2026-09-06T04:22:19.569595+00:00",
+      "end": "2026-09-06T04:22:49.569595+00:00",
+      "metrics": {
+        "orders-service": {
+          "service": "orders-service",
+          "request_count": 16,
+          "error_count": 8,
+          "timeout_count": 8,
+          "error_rate": 0.5,
+          "p50_ms": 18.295,
+          "p95_ms": 604.638,
+          "window_seconds": 30.0,
+          "requests_per_second": 0.533333,
+          "available": true,
+          "evidence_id": "ev_7a2e6622791678625ac855c14e0182842a4a86dace89b7193288ce6bc5da484c",
+          "limitations": []
+        },
+        "inventory-service": {
+          "service": "inventory-service",
+          "request_count": 16,
+          "error_count": 0,
+          "timeout_count": 0,
+          "error_rate": 0.0,
+          "p50_ms": 15.698,
+          "p95_ms": 1806.491,
+          "window_seconds": 30.0,
+          "requests_per_second": 0.533333,
+          "available": true,
+          "evidence_id": "ev_9c1fa6e855d67c26bb4c466a42f1a56af7aba1fd08e9e3ce427ec42227a5e874",
+          "limitations": []
+        }
+      }
+    },
+    "after": {
+      "start": "2026-09-06T04:22:55.589228+00:00",
+      "end": "2026-09-06T04:23:25.589228+00:00",
+      "metrics": {
+        "orders-service": {
+          "service": "orders-service",
+          "request_count": 8,
+          "error_count": 0,
+          "timeout_count": 0,
+          "error_rate": 0.0,
+          "p50_ms": 18.479,
+          "p95_ms": 19.842,
+          "window_seconds": 30.0,
+          "requests_per_second": 0.266667,
+          "available": true,
+          "evidence_id": "ev_e9a95507ab52d6e468763f9f97a35c99a87d6c5a3d2814f139ad189e2a7ddbc9",
+          "limitations": []
+        },
+        "inventory-service": {
+          "service": "inventory-service",
+          "request_count": 8,
+          "error_count": 0,
+          "timeout_count": 0,
+          "error_rate": 0.0,
+          "p50_ms": 15.868,
+          "p95_ms": 16.333,
+          "window_seconds": 30.0,
+          "requests_per_second": 0.266667,
+          "available": true,
+          "evidence_id": "ev_8fb432920dd839c95b7bd49c5f00582da8625f16cad892996f8faee692950256",
+          "limitations": []
+        }
+      }
+    },
+    "summary": "Comparison incomplete: use continuous traffic and at least 10 requests per service in equally long windows with comparable volume.",
+    "remaining_seconds": 0
+  },
+  "model": {
+    "available": true,
+    "model": "qwen3:8b",
+    "mode": "live",
+    "detail": "Local Ollama model is downloaded and advertises tool calling; first inference may load weights"
+  },
+  "browser_errors": []
+}

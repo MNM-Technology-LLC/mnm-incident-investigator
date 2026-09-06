@@ -1,0 +1,29 @@
+# Implementation contract (internal contributor reference)
+
+Project: MNM Incident Investigator, entirely isolated in this directory.
+
+## Runtime topology
+Java 21 Spring Boot orders-service :8081 calls inventory-service :8082 with 600 ms request timeout. Inventory fault sets 1800 ms delay via token-protected POST /internal/fault {"enabled":true|false}; GET /actuator/health is liveness only. GET /api/orders generates synthetic orders; GET /api/inventory checks synthetic SKU. W3C traceparent, server + client spans, correlated structured JSON logs, measured request metrics. No control paths, delay setting, or fault state exported to telemetry.
+
+A tiny Python telemetry receiver :4318 persists actual events in SQLite. A distinct MCP process :8001 mounts database read-only and exposes ONLY get_service_health, get_service_map, query_metrics, search_logs, get_trace. Investigator :8000 uses real MCP over Streamable HTTP and configurable Ollama; no app/control network or token. Console :8080 serves static UI, runs bounded traffic, controls fault, and proxies investigator API. Console controls and scenario state NEVER enter model context. Console may query telemetry through MCP for dashboard and recovery.
+
+## Files / ownership
+services/ owned Java agent. investigator/mnm_investigator/telemetry.py and mcp_server.py owned telemetry agent. investigator/mnm_investigator/static/ owned frontend agent. Root handles shared pyproject, API/console, integration, contract. Later agent owns agent.py and models.py. Avoid touching others' files without coordination.
+
+## Telemetry event POST /v1/events
+JSON {"events":[...]}, header X-Telemetry-Token from TELEMETRY_INGEST_TOKEN. Max 100 events/batch. Event flat schema:
+{"kind":"log|span|metric", "service":"orders-service|inventory-service", "timestamp":"UTC ISO8601", "trace_id":"32 lower hex", "span_id":"16 lower hex", "parent_span_id":"16 lower hex or null", "name":"HTTP GET /api/orders|HTTP GET /api/inventory|inventory.request", "duration_ms":123.4, "status_code":200, "level":"INFO|ERROR", "message":"request completed|inventory request timed out", "attributes":{"peer_service":"inventory-service","error_type":"timeout","timeout_ms":600,"method":"GET","path":"/api/orders","span_kind":"server|client"}}.
+metric events represent completed SERVER requests only; span events include client and server. SQLite contains sanitized typed fields; no arbitrary messages/attributes sent to model beyond bounded/redacted values. Filter controls out on ingest too.
+
+## MCP tool arguments
+All except get_trace: service optional for health/map (default all), REQUIRED service for metrics/logs; service enum orders-service|inventory-service, start and end required UTC timestamps. Windows maximum 15 minutes. search_logs optional level (INFO|WARN|ERROR), trace_id, limit 1..50 default20. get_trace(trace_id,start,end). get_service_map(start,end) infers observed parent/client edges only.
+Tools return {"evidence_id":"ev_<hash>","tool":"...","query":{...},"data":{...},"available":true|false,"limitations":[...]}. Store evidence snapshots persistently; GET /evidence/{id} on MCP server HTTP :8001 resolves records. Stable IDs hash canonical query+result. Agent only accepts citations from IDs retrieved during this run. Missing DB/results represented explicitly, never fabricated zeros.
+query_metrics data: {service,request_count,error_count,timeout_count,error_rate,p50_ms,p95_ms,window_seconds,requests_per_second}; null rates/latencies if no samples. get_service_health data {services:[{service,status:healthy|degraded|no_data,request_count,error_count,error_rate,p95_ms,last_seen}],window_seconds}. search_logs data {records:[event...],truncated:bool}. get_trace data {trace_id,spans:[event...],logs:[event...],complete:bool}. get_service_map data {edges:[{source,target,request_count,error_count,p95_ms}],services:[...]}. Tool failures available false + limitations. Each evidence has time bounds.
+
+## Investigator HTTP and Python interfaces
+GET /health -> {status}; GET /api/model -> {available,model,mode:"live",detail}; POST /api/investigations {question:"Why are orders failing?",window_seconds:30} -> {id,status:"running"}; GET /api/investigations/{id} -> {id,status:running|complete|failed|unavailable,mode:"live",model,started_at,window:{start,end},timeline:[{sequence,type:tool_call|tool_result|finding|status,tool?,arguments?,evidence_id?,summary,timestamp}],diagnosis:null|{assessment:"incident|healthy|incomplete",impact,likely_cause,confidence:"low|moderate|high",confidence_basis,evidence:[{id,reason}],uncertainty:[string],next_steps:[string]},error:null|string}. GET /api/evidence/{id} resolves evidence via MCP service. UI polls jobs 1s. No mock mode exposed by production UI.
+
+## Console API
+Same-origin /api/model, /api/investigations*, /api/evidence* proxy. GET /api/dashboard -> {window:{start,end},services:[...],metrics:{"orders-service":{...},"inventory-service":{...}},traffic:{running,requests_sent,successes,failures,started_at},controls:{fault_enabled},telemetry_available,mode:"live"}. POST /api/demo/traffic {running:true|false} (2 requests/sec, max 360 sec), POST /api/demo/fault {enabled:true|false}; POST /api/demo/reset {} disables fault, keeps traffic running and starts recovery window; GET /api/demo/recovery -> {status:"idle|collecting|complete|insufficient",window_seconds:30,before:null|{start,end,metrics},after:null|{start,end,metrics},remaining_seconds,summary}. Before and after always same duration; settling delay 3 sec before recovery window. POST controls require Origin matching Host when supplied and X-Demo-Control:1 header. Local loopback bindings; no permissive CORS.
+
+Python 3.12, package mnm_investigator under investigator/. FastAPI, uvicorn, httpx, MCP SDK 1.x, pydantic2. Vanilla static HTML/CSS/JS (no frontend dependencies).

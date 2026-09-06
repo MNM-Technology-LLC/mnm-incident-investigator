@@ -1,0 +1,145 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mnm-incident-investigator
+
+x-python: &python
+  image: mnm-incident-investigator-python:local
+  build:
+    context: .
+    dockerfile: Dockerfile
+  init: true
+  read_only: true
+  tmpfs: ["/tmp"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  restart: unless-stopped
+
+x-java: &java
+  init: true
+  read_only: true
+  tmpfs: ["/tmp"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  restart: unless-stopped
+
+services:
+  telemetry:
+    <<: *python
+    command: [python, -m, mnm_investigator.telemetry]
+    environment:
+      TELEMETRY_DB: /telemetry/telemetry.db
+      TELEMETRY_INGEST_TOKEN: ${TELEMETRY_INGEST_TOKEN:?Run make setup first}
+    volumes: ["telemetry-data:/telemetry"]
+    networks: [application]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4318/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  inventory-service:
+    <<: *java
+    build:
+      context: ./services
+      args: {SERVICE: inventory-service}
+    environment:
+      TELEMETRY_ENDPOINT: http://telemetry:4318/v1/events
+      TELEMETRY_INGEST_TOKEN: ${TELEMETRY_INGEST_TOKEN:?Run make setup first}
+      DEMO_CONTROL_TOKEN: ${DEMO_CONTROL_TOKEN:?Run make setup first}
+    networks: [application]
+    depends_on:
+      telemetry: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "bash -c '</dev/tcp/127.0.0.1/8082'"]
+      interval: 5s
+      timeout: 3s
+      retries: 18
+      start_period: 20s
+
+  orders-service:
+    <<: *java
+    build:
+      context: ./services
+      args: {SERVICE: orders-service}
+    environment:
+      INVENTORY_URL: http://inventory-service:8082
+      TELEMETRY_ENDPOINT: http://telemetry:4318/v1/events
+      TELEMETRY_INGEST_TOKEN: ${TELEMETRY_INGEST_TOKEN:?Run make setup first}
+    networks: [application]
+    depends_on:
+      telemetry: {condition: service_healthy}
+      inventory-service: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "bash -c '</dev/tcp/127.0.0.1/8081'"]
+      interval: 5s
+      timeout: 3s
+      retries: 18
+      start_period: 20s
+
+  mcp:
+    <<: *python
+    command: [python, -m, mnm_investigator.mcp_server]
+    environment:
+      TELEMETRY_DB: /telemetry/telemetry.db
+      EVIDENCE_DB: /evidence/evidence.db
+      INVESTIGATOR_UPSTREAM: http://investigator:8000
+    volumes:
+      - telemetry-data:/telemetry:ro
+      - evidence-data:/evidence
+    networks: [console-read, agent-read]
+    depends_on:
+      telemetry: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  investigator:
+    <<: *python
+    command: [python, -m, mnm_investigator.api]
+    environment:
+      MCP_URL: http://mcp:8001/mcp
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:8b}
+      INVESTIGATION_TIMEOUT_SECONDS: ${INVESTIGATION_TIMEOUT_SECONDS:-240}
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    networks: [agent-read, model]
+    depends_on:
+      mcp: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  console:
+    <<: *python
+    command: [python, -m, mnm_investigator.console]
+    environment:
+      ORDERS_URL: http://orders-service:8081
+      INVENTORY_URL: http://inventory-service:8082
+      DEMO_CONTROL_TOKEN: ${DEMO_CONTROL_TOKEN:?Run make setup first}
+      MCP_URL: http://mcp:8001/mcp
+      INVESTIGATOR_URL: http://mcp:8001
+    ports: ["127.0.0.1:${CONSOLE_PORT:-8080}:8080"]
+    networks: [application, console-read]
+    depends_on:
+      orders-service: {condition: service_healthy}
+      mcp: {condition: service_healthy}
+      investigator: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  telemetry-data:
+  evidence-data:
+
+networks:
+  application: {internal: true}
+  console-read: {internal: true}
+  agent-read: {internal: true}
+  model: {}

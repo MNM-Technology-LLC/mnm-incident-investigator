@@ -1,0 +1,14 @@
+MNM Incident Investigator
+Copyright 2026 MNM Associates contributors
+
+Original project code and documentation are licensed under the Apache License,
+Version 2.0. See LICENSE.
+
+This project uses separately licensed third-party packages and runtime images.
+Their copyright, license, and attribution notices remain applicable. See
+docs/dependencies.md for the dependency inventory, source locations, and
+redistribution considerations. No third-party package or model is relicensed
+by this notice.
+
+Qwen3-8B model weights are downloaded separately from their upstream provider.
+Their Apache-2.0 license is documented separately in docs/model-setup.md.
